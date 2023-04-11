@@ -23,40 +23,27 @@ StopWDT     mov.w   #WDTPW|WDTHOLD,&WDTCTL  ; Stop watchdog timer
 ;-------------------------------------------------------------------------------
 ; Main loop here
 ;-------------------------------------------------------------------------------
-EX_2:
-			MOV 	#vet, R5
-			call	#maior16
+m1_ex8:
+			call 	#fib16
 			jmp		$
 			nop
-
-maior16:
-			MOV.B	@R5, R8
-			incd	R5
-			MOV		#0, R6
-			MOV		#0, R7
-
-LB1:
-			CMP		@R5, R6
-			jeq		LB3
-			jhs		LB2
-			MOV		@R5, R6
-			MOV		#1, R7
-
-LB2:
-			incd	R5
-			DEC		R8
-			jne		LB1
-			ret
-
-LB3:
-			inc		R7
-			jmp		LB2
-			nop
+fib16:
+			mov		#FIB+4,R10
 
 
+lb1:
+			mov		-2(R10), 0(R10)
+			add		-4(R10), 0(R10)
+			jc		fin
+			incd	R10
+			jmp		lb1
 
-			.data
-vet:		.word	8,4,14,3,1,14,14,3,0
+fin:		ret
+
+
+		.data
+FIB:		.word	1,2
+
                                             
 
 ;-------------------------------------------------------------------------------
